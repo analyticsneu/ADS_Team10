@@ -6,8 +6,7 @@ using System.Web;
 /// <summary>
 /// Summary description for EnergyDataInput
 /// </summary>
-namespace WebSite2
-{
+
     public class EnergyDataInput
     {
         public EnergyDataInput()
@@ -36,4 +35,3 @@ namespace WebSite2
         public double totalfuelConsumpMMBtu { get; set; }
         
     }
-}
