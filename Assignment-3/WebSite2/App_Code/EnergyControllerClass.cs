@@ -70,6 +70,51 @@ using Newtonsoft.Json;
             }
 
         }
+        public static string ClassifyPowerGeneration(EnergyDataInput dataset)
+        {
+            using (var client1 = new HttpClient())
+            {
+                var scoreRequest1 = new
+                {
+
+                    Inputs = new Dictionary<string, StringTable>() {
+                        {
+                            "input1",
+                             new StringTable() 
+                            {
+                                ColumnNames = new string[] {"Plant Id", "Plant State", "Sector Name", "Reported Fuel Type Code", "AER Fuel Type Code", "Netgen_January", "Netgen_February", "Netgen_March", "Netgen_April", "Netgen_May", "Netgen_June", "Netgen_July", "Netgen_August", "Netgen_September", "Netgen_October", "Netgen_November", "Netgen_December", "Total Fuel Consumption Quantity", "Total Fuel Consumption MMBtu","Net_Generation"},
+                                Values = new string[,] {  { Convert.ToString(dataset.plantID), Convert.ToString(dataset.plantState), Convert.ToString(dataset.sectorName), Convert.ToString(dataset.sectorName), Convert.ToString(dataset.sectorName), Convert.ToString(dataset.netGenJan), Convert.ToString(dataset.netGenFeb), Convert.ToString(dataset.netGenMar), Convert.ToString(dataset.netGenApr), Convert.ToString(dataset.netGenMay), Convert.ToString(dataset.netGenJun), Convert.ToString(dataset.netGenJul), Convert.ToString(dataset.netGenAug), Convert.ToString(dataset.netGenSep), Convert.ToString(dataset.netGenOct), Convert.ToString(dataset.netGenNov), Convert.ToString(dataset.netGenDec), Convert.ToString(dataset.totalfuelConsump), Convert.ToString(dataset.totalfuelConsumpMMBtu), Convert.ToString(dataset.totalNetGeneration) }, { Convert.ToString(dataset.plantID), Convert.ToString(dataset.plantState), Convert.ToString(dataset.sectorName), Convert.ToString(dataset.sectorName), Convert.ToString(dataset.sectorName), Convert.ToString(dataset.netGenJan), Convert.ToString(dataset.netGenFeb), Convert.ToString(dataset.netGenMar), Convert.ToString(dataset.netGenApr), Convert.ToString(dataset.netGenMay), Convert.ToString(dataset.netGenJun), Convert.ToString(dataset.netGenJul), Convert.ToString(dataset.netGenAug), Convert.ToString(dataset.netGenSep), Convert.ToString(dataset.netGenOct), Convert.ToString(dataset.netGenNov), Convert.ToString(dataset.netGenDec), Convert.ToString(dataset.totalfuelConsump), Convert.ToString(dataset.totalfuelConsumpMMBtu), Convert.ToString(dataset.totalNetGeneration) }  }
+                            }
+
+                        },
+                    },
+                    GlobalParameters = new Dictionary<string, string>()
+                    {
+                    }
+                };
+                const string apiKey = "IiImNOCZh2bhjmYtDW11Ffua5baRKHJ8LbQWxpdRf3JWoI34n4UMjQpq5WHRWI29ZQZOpDjxyV2ibQ7IQh+AXQ==";
+                client1.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
+                client1.BaseAddress = new Uri("https://ussouthcentral.services.azureml.net/workspaces/65817a10f4a4452db8059313c8182a68/services/4888e2d620114e8786b2d2e788706ff8/execute?api-version=2.0&details=true");
+
+                //CALL WEB SERVICE
+                HttpResponseMessage response = client1.PostAsJsonAsync("", scoreRequest1).Result;
+
+                //Work with response
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsondocument = response.Content.ReadAsStringAsync().Result;
+                    var responseBody = JsonConvert.DeserializeObject<RRSResponseObject>(jsondocument);
+                    return responseBody.Results.output1.value.Values[0][0];
+
+                }
+                else
+                {
+                    return "Error";
+                }
+            }
+
+        }
     }
 
 
@@ -97,4 +142,8 @@ using Newtonsoft.Json;
        public string[][] Values { get; set; }
    } 
    #endregion
+
+
+
+
 

@@ -18,6 +18,7 @@ using System.Web;
 
         public double plantID { get; set; }
         public string plantName { get; set; }
+        public string plantState { get; set; }
         public string sectorName { get; set; }
         public double netGenJan { get; set; }
         public double netGenFeb { get; set; }
@@ -33,5 +34,6 @@ using System.Web;
         public double netGenDec { get; set; }
         public double totalfuelConsump { get; set; }
         public double totalfuelConsumpMMBtu { get; set; }
+        public double totalNetGeneration { get; set; }
         
     }
